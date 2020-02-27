@@ -43,7 +43,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: getItems(10)
+      items: getItems(5),
+      correctItems: getItems(5).reverse(),
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
