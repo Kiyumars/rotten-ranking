@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import 'bulma/css/bulma.css';
+
 // fake data generator
 const getItems = count =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
@@ -21,22 +23,15 @@ const reorder = (list, startIndex, endIndex) => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
   // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
+  background: isDragging ? "lightgrey" : "white",
 
   // styles we need to apply on draggables
   ...draggableStyle
 });
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  padding: grid,
-  width: 250
+  padding: grid
 });
 
 class App extends Component {
@@ -70,36 +65,43 @@ class App extends Component {
   // But in this example everything is just done in one place for simplicity
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {this.state.items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
+        <div class="columns">
+            <div class="column is-three-fifths is-offset-one-fifth">
+
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                        >
+                        {this.state.items.map((item, index) => (
+                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                            {(provided, snapshot) => (
+                                <div className="card is-three-fifths is-offset-one-fifth "
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                    snapshot.isDragging,
+                                    provided.draggableProps.style
+                                )}
+                                >
+                                    <div className="card-content">
+                                        {item.content} 
+                                    </div>
+                                </div>
+                            )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                        </div>
+                    )}
+                    </Droppable>
+                </DragDropContext>
             </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+        </div>
     );
   }
 }
