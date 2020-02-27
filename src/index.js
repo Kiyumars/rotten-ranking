@@ -24,7 +24,7 @@ const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // change background colour if dragging
-  background: isDragging ? "lightgrey" : "white",
+  background: isDragging ? "darkgrey" : "lightgrey",
 
   // styles we need to apply on draggables
   ...draggableStyle
@@ -79,7 +79,7 @@ class App extends Component {
                         {this.state.items.map((item, index) => (
                             <Draggable key={item.id} draggableId={item.id} index={index}>
                             {(provided, snapshot) => (
-                                <div className="card is-three-fifths is-offset-one-fifth "
+                                <div className="box card"                                
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
@@ -87,10 +87,22 @@ class App extends Component {
                                     snapshot.isDragging,
                                     provided.draggableProps.style
                                 )}
-                                >
-                                    <div className="card-content">
-                                        {item.content} 
+                        >         
+                                    <div className="card-header">
+                                        <div className="card-header-title">The Godfather</div>
                                     </div>
+                                    <div className="card-image" >
+                                        <figure className="image">
+                                            <img style={{width: 300}} alt={"Poster for " + item.content} className="image" src="https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg%22,%22" />
+                                        </figure>
+                                    </div>
+                                    <div className="card-content">
+                                        <div className="media">
+                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/sY1S34973zA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                        </div>
+                                    </div>
+
+
+
                                 </div>
                             )}
                             </Draggable>
