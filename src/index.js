@@ -20,6 +20,17 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+// check if ordered list is the correct list
+const areArraysEqual = (a, b) => {
+    if (a.length === 0 || b.length === 0) {
+        return false;
+    }
+    if (a.length !== b.length) {
+        return false;
+    }
+    return a.every( (item, i) => item.id === b[i].id);
+}
+
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -38,10 +49,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: getItems(5),
-      correctItems: getItems(5).reverse(),
+      items: getItems(3),
+      correctItems: getItems(3).reverse(),
     };
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.checkIfCorrect = this.checkIfCorrect.bind(this);
+
   }
 
   onDragEnd(result) {
@@ -56,17 +69,25 @@ class App extends Component {
       result.destination.index
     );
 
+    this.checkIfCorrect(items)
+
     this.setState({
       items
     });
+    
   }
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
+  checkIfCorrect(itemsOrder) {
+      areArraysEqual(itemsOrder, this.state.correctItems)
+      if (areArraysEqual(itemsOrder, this.state.correctItems)) {
+          alert("Correct")
+      }
+  }
+
   render() {
     return (
-        <div class="columns">
-            <div class="column is-three-fifths is-offset-one-fifth">
+        <div className="columns">
+            <div className="column is-three-fifths is-offset-one-fifth">
 
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <Droppable droppableId="droppable">
@@ -96,13 +117,10 @@ class App extends Component {
                                             <img style={{width: 300}} alt={"Poster for " + item.content} className="image" src="https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg%22,%22" />
                                         </figure>
                                     </div>
-                                    <div className="card-content">
+                                    {/* <div className="card-content">
                                         <div className="media">
-                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/sY1S34973zA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                        </div>
-                                    </div>
-
-
-
+                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/sY1S34973zA" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="some title"></iframe>                                        </div>
+                                    </div> */}
                                 </div>
                             )}
                             </Draggable>
